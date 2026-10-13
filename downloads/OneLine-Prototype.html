@@ -1,0 +1,3981 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>办妥｜一句话代办</title>
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+body {
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    "PingFang SC",
+    "Microsoft YaHei",
+    sans-serif;
+
+  background: #edf1ee;
+
+  color: #26332d;
+}
+
+
+button,
+textarea {
+  font: inherit;
+}
+
+
+button {
+  cursor: pointer;
+}
+
+
+/* ===================================
+   整体框架
+=================================== */
+
+.app-shell {
+  width: min(1280px, calc(100% - 40px));
+
+  min-height: 760px;
+
+  margin: 28px auto;
+
+  display: grid;
+
+  grid-template-columns:
+    240px minmax(0, 1fr);
+
+  background: #fbfcfa;
+
+  border: 1px solid #dfe5e1;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 18px 50px rgba(25, 40, 33, 0.08);
+}
+
+
+/* ===================================
+   Sidebar
+=================================== */
+
+.sidebar {
+  padding: 28px 20px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  background: #f5f7f5;
+
+  border-right:
+    1px solid #e1e6e3;
+}
+
+
+.brand {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 38px;
+}
+
+
+.brand-icon {
+  width: 38px;
+
+  height: 38px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  border-radius: 11px;
+
+  background: #346b58;
+
+  color: white;
+
+  font-weight: 700;
+}
+
+
+.brand-name {
+  font-size: 16px;
+
+  font-weight: 700;
+}
+
+
+.brand-desc {
+  margin-top: 2px;
+
+  color: #8b9690;
+
+  font-size: 10px;
+}
+
+
+.stage-nav {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+
+.stage-item {
+  display: grid;
+
+  grid-template-columns:
+    30px 1fr;
+
+  gap: 9px;
+
+  padding: 11px 10px;
+
+  color: #89948e;
+
+  border-radius: 10px;
+
+  transition: 0.2s;
+}
+
+
+.stage-item.active {
+  color: #285442;
+
+  background: #e5efea;
+}
+
+
+.stage-item.done {
+  color: #567567;
+}
+
+
+.stage-number {
+  width: 26px;
+
+  height: 26px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 7px;
+
+  background: #edf0ee;
+
+  font-size: 10px;
+
+  font-weight: 700;
+}
+
+
+.stage-item.active
+.stage-number {
+  background: #346b58;
+
+  color: white;
+}
+
+
+.stage-item.done
+.stage-number {
+  background: #dceae3;
+
+  color: #356956;
+}
+
+
+.stage-name {
+  font-size: 12px;
+
+  font-weight: 650;
+}
+
+
+.stage-desc {
+  margin-top: 2px;
+
+  font-size: 9px;
+
+  opacity: 0.78;
+}
+
+
+.sidebar-footer {
+  margin-top: auto;
+
+  padding: 14px 8px 0;
+
+  border-top:
+    1px solid #e1e6e3;
+
+  color: #969f9a;
+
+  font-size: 9px;
+
+  line-height: 1.7;
+}
+
+
+/* ===================================
+   Main
+=================================== */
+
+.main-content {
+  min-width: 0;
+
+  padding: 38px 44px 50px;
+}
+
+
+.topbar {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  gap: 20px;
+
+  margin-bottom: 34px;
+}
+
+
+.eyebrow,
+.card-label {
+  margin-bottom: 7px;
+
+  color: #77847d;
+
+  font-size: 10px;
+
+  font-weight: 650;
+}
+
+
+.topbar h1 {
+  font-size: 28px;
+
+  font-weight: 720;
+
+  letter-spacing: -0.6px;
+}
+
+
+.topbar p {
+  margin-top: 7px;
+
+  color: #838e88;
+
+  font-size: 12px;
+}
+
+
+.system-status {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  padding: 7px 10px;
+
+  border:
+    1px solid #dfe5e1;
+
+  border-radius: 999px;
+
+  color: #78847d;
+
+  font-size: 9px;
+}
+
+
+.status-dot {
+  width: 6px;
+
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #4d9879;
+}
+
+
+/* ===================================
+   Stage
+=================================== */
+
+.stage-page {
+  display: none;
+}
+
+
+.stage-page.active {
+  display: block;
+}
+
+
+/* ===================================
+   Buttons
+=================================== */
+
+.primary-btn,
+.secondary-btn,
+.text-btn {
+  border: none;
+
+  outline: none;
+}
+
+
+.primary-btn {
+  padding: 11px 17px;
+
+  border-radius: 9px;
+
+  background: #3f7562;
+
+  color: white;
+
+  font-size: 11px;
+
+  font-weight: 650;
+
+  transition: 0.15s;
+}
+
+
+.primary-btn:hover {
+  background: #336450;
+}
+
+
+.secondary-btn {
+  padding: 10px 15px;
+
+  border:
+    1px solid #d8dfdb;
+
+  border-radius: 9px;
+
+  background: white;
+
+  color: #56635c;
+
+  font-size: 11px;
+}
+
+
+.secondary-btn:hover {
+  background: #f8faf9;
+}
+
+
+.text-btn {
+  background: transparent;
+
+  color: #557064;
+
+  font-size: 10px;
+}
+
+
+.danger-text {
+  color: #a35454;
+}
+
+
+/* ===================================
+   Stage 1
+=================================== */
+
+.task-card,
+.understanding-card,
+.plan-section,
+.app-route-panel {
+  padding: 20px;
+
+  border:
+    1px solid #e0e6e2;
+
+  border-radius: 15px;
+
+  background: white;
+}
+
+
+.folder-row {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-bottom: 16px;
+}
+
+
+.folder-info {
+  display: flex;
+
+  align-items: center;
+
+  gap: 11px;
+}
+
+
+.folder-icon {
+  width: 38px;
+
+  height: 38px;
+
+  display: flex;
+
+  justify-content: center;
+
+  align-items: center;
+
+  border-radius: 9px;
+
+  background: #f0f3f1;
+}
+
+
+.folder-name {
+  font-size: 12px;
+
+  font-weight: 650;
+}
+
+
+.folder-path {
+  margin-top: 3px;
+
+  color: #939d97;
+
+  font-size: 9px;
+}
+
+
+.task-input {
+  width: 100%;
+
+  min-height: 150px;
+
+  padding: 15px;
+
+  resize: vertical;
+
+  border:
+    1px solid #dce2de;
+
+  border-radius: 12px;
+
+  outline: none;
+
+  color: #34423b;
+
+  font-size: 13px;
+
+  line-height: 1.8;
+}
+
+
+.task-input:focus {
+  border-color: #7ba493;
+
+  box-shadow:
+    0 0 0 3px rgba(78, 123, 105, 0.08);
+}
+
+
+.task-footer {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  margin-top: 14px;
+}
+
+
+.input-hint {
+  color: #9aa39e;
+
+  font-size: 9px;
+}
+
+
+.examples {
+  margin-top: 27px;
+}
+
+
+.examples-title {
+  margin-bottom: 10px;
+
+  color: #818d86;
+
+  font-size: 10px;
+}
+
+
+.example-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  gap: 10px;
+}
+
+
+.example-card {
+  padding: 13px;
+
+  text-align: left;
+
+  border:
+    1px solid #e2e7e4;
+
+  border-radius: 10px;
+
+  background: #fafbfa;
+
+  color: #6f7b74;
+
+  font-size: 10px;
+
+  line-height: 1.6;
+}
+
+
+/* ===================================
+   Stage 2
+=================================== */
+
+.understanding-card h2,
+.plan-section h2,
+.execution-summary h2,
+.confirm-wrapper h2,
+.success-wrapper h2,
+.sending-wrapper h2 {
+  font-size: 19px;
+
+  font-weight: 680;
+}
+
+
+.understanding-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap: 12px;
+
+  margin-top: 20px;
+}
+
+
+.info-block {
+  padding: 13px;
+
+  border-radius: 10px;
+
+  background: #f7f9f7;
+}
+
+
+.info-label {
+  color: #919c96;
+
+  font-size: 9px;
+}
+
+
+.info-value {
+  margin-top: 5px;
+
+  color: #3d4d45;
+
+  font-size: 11px;
+
+  font-weight: 550;
+}
+
+
+.mini-route {
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin-top: 7px;
+
+  color: #3f5e51;
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+
+.mini-arrow {
+  color: #aeb6b1;
+}
+
+
+.route-note {
+  margin-top: 5px;
+
+  color: #98a19c;
+
+  font-size: 8px;
+}
+
+
+.plan-section {
+  margin-top: 14px;
+}
+
+
+.section-heading {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-start;
+
+  margin-bottom: 17px;
+}
+
+
+.auto-badge {
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  background: #edf4f1;
+
+  color: #47715f;
+
+  font-size: 9px;
+}
+
+
+.plan-list {
+  border-top:
+    1px solid #edf0ee;
+}
+
+
+.plan-row {
+  display: grid;
+
+  grid-template-columns:
+    38px 1fr;
+
+  gap: 10px;
+
+  padding: 13px 2px;
+
+  border-bottom:
+    1px solid #edf0ee;
+}
+
+
+.plan-index {
+  color: #9ca59f;
+
+  font-size: 9px;
+}
+
+
+.plan-title {
+  font-size: 11px;
+
+  font-weight: 620;
+}
+
+
+.plan-desc {
+  margin-top: 4px;
+
+  color: #929b96;
+
+  font-size: 9px;
+}
+
+
+.risk-tag {
+  margin-left: 7px;
+
+  padding: 3px 6px;
+
+  border-radius: 999px;
+
+  background: #fff2d7;
+
+  color: #986510;
+
+  font-size: 8px;
+}
+
+
+.bottom-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 9px;
+
+  margin-top: 16px;
+}
+
+
+/* ===================================
+   跨软件 Route
+=================================== */
+
+.app-route-panel {
+  margin-bottom: 22px;
+}
+
+
+.route-title {
+  margin-bottom: 14px;
+
+  color: #838f88;
+
+  font-size: 9px;
+}
+
+
+.app-route {
+  display: grid;
+
+  grid-template-columns:
+    1fr 44px 1fr 44px 1fr;
+
+  gap: 5px;
+
+  align-items: center;
+}
+
+
+.route-app {
+  padding: 12px;
+
+  text-align: center;
+
+  border:
+    1px solid #e2e7e4;
+
+  border-radius: 10px;
+
+  background: #fafbfa;
+
+  color: #939d97;
+
+  transition: 0.25s;
+}
+
+
+.route-app.active {
+  border-color: #76a08e;
+
+  background: #edf5f1;
+
+  color: #366452;
+}
+
+
+.route-app.done {
+  border-color: #d4e2dc;
+
+  background: #f4f8f6;
+
+  color: #547567;
+}
+
+
+.route-app-icon {
+  margin-bottom: 5px;
+
+  font-size: 18px;
+}
+
+
+.route-app-name {
+  font-size: 10px;
+
+  font-weight: 620;
+}
+
+
+.route-status {
+  margin-top: 4px;
+
+  font-size: 8px;
+}
+
+
+.route-line {
+  text-align: center;
+
+  color: #b8c0bb;
+
+  font-size: 16px;
+}
+
+
+/* ===================================
+   Stage 3 Execution
+=================================== */
+
+.execution-summary {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: flex-end;
+}
+
+
+.execution-desc {
+  margin-top: 7px;
+
+  color: #87938c;
+
+  font-size: 10px;
+}
+
+
+.progress-number {
+  color: #8c9791;
+
+  font-size: 10px;
+}
+
+
+.progress-number
+span:first-child {
+  color: #37614f;
+
+  font-size: 25px;
+
+  font-weight: 700;
+}
+
+
+.progress-bar {
+  height: 5px;
+
+  margin: 18px 0 24px;
+
+  overflow: hidden;
+
+  border-radius: 999px;
+
+  background: #e5ebe7;
+}
+
+
+.progress-fill {
+  width: 25%;
+
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: #4a806d;
+
+  transition: width 0.45s ease;
+}
+
+
+.execution-layout {
+  display: grid;
+
+  grid-template-columns:
+    210px minmax(0, 1fr);
+
+  gap: 14px;
+}
+
+
+.execution-steps {
+  padding: 12px;
+
+  border:
+    1px solid #e1e7e3;
+
+  border-radius: 13px;
+
+  background: white;
+}
+
+
+.execution-step {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 11px;
+
+  border-radius: 9px;
+
+  color: #89948e;
+}
+
+
+.execution-step.active {
+  background: #edf4f1;
+
+  color: #365f50;
+}
+
+
+.execution-step.done {
+  color: #587467;
+}
+
+
+.exec-icon {
+  width: 27px;
+
+  height: 27px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border:
+    1px solid #dce2de;
+
+  border-radius: 50%;
+
+  font-size: 9px;
+}
+
+
+.execution-step.active
+.exec-icon {
+  background: #3f7562;
+
+  border-color: #3f7562;
+
+  color: white;
+}
+
+
+.execution-step.done
+.exec-icon {
+  background: #e0eee8;
+
+  border-color: #cbe0d7;
+
+  color: #31604e;
+}
+
+
+.exec-title {
+  font-size: 10px;
+
+  font-weight: 620;
+}
+
+
+.exec-state {
+  margin-top: 2px;
+
+  font-size: 8px;
+}
+
+
+.execution-preview {
+  min-height: 360px;
+
+  overflow: hidden;
+
+  border:
+    1px solid #e1e7e3;
+
+  border-radius: 13px;
+
+  background: #f8faf8;
+}
+
+
+.preview-header {
+  height: 45px;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 0 14px;
+
+  background: white;
+
+  border-bottom:
+    1px solid #e4e9e6;
+
+  color: #59665f;
+
+  font-size: 10px;
+}
+
+
+.working-indicator {
+  display: flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  color: #87928c;
+
+  font-size: 8px;
+}
+
+
+.working-indicator span {
+  width: 6px;
+
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: #4b9277;
+}
+
+
+.preview-content {
+  padding: 18px;
+}
+
+
+.preview-title {
+  margin-bottom: 12px;
+
+  font-size: 11px;
+
+  font-weight: 650;
+}
+
+
+.fake-file {
+  display: flex;
+
+  justify-content: space-between;
+
+  padding: 10px;
+
+  margin-bottom: 7px;
+
+  border:
+    1px solid #e3e8e5;
+
+  border-radius: 8px;
+
+  background: white;
+
+  font-size: 9px;
+}
+
+
+.fake-table {
+  width: 100%;
+
+  border-collapse: collapse;
+
+  background: white;
+
+  font-size: 9px;
+}
+
+
+.fake-table th,
+.fake-table td {
+  padding: 8px;
+
+  border-bottom:
+    1px solid #e8ecea;
+
+  text-align: left;
+}
+
+
+.fake-mail-row {
+  margin-bottom: 10px;
+}
+
+
+.fake-mail-label {
+  margin-bottom: 4px;
+
+  color: #89948e;
+
+  font-size: 8px;
+}
+
+
+.fake-mail-field {
+  padding: 9px;
+
+  border:
+    1px solid #e1e6e3;
+
+  border-radius: 7px;
+
+  background: white;
+
+  font-size: 9px;
+}
+
+
+.execution-toolbar {
+  display: flex;
+
+  justify-content: space-between;
+
+  margin-top: 12px;
+}
+
+
+.execution-log {
+  display: none;
+
+  margin-top: 12px;
+
+  padding: 12px;
+
+  border-radius: 9px;
+
+  background: #f2f5f3;
+
+  color: #717d76;
+
+  font-family: monospace;
+
+  font-size: 8px;
+
+  line-height: 1.9;
+}
+
+
+/* ===================================
+   Stage 4 Confirmation
+=================================== */
+
+.confirm-wrapper,
+.success-wrapper,
+.sending-wrapper {
+  max-width: 650px;
+
+  margin: 28px auto;
+
+  text-align: center;
+}
+
+
+.confirm-icon,
+.success-icon {
+  width: 48px;
+
+  height: 48px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  margin: 0 auto 14px;
+
+  border-radius: 50%;
+
+  font-size: 20px;
+
+  font-weight: 700;
+}
+
+
+.confirm-icon {
+  background: #fff1d5;
+
+  color: #a36a10;
+}
+
+
+.success-icon {
+  background: #dfeee7;
+
+  color: #356754;
+}
+
+
+.waiting-label {
+  margin-bottom: 8px;
+
+  color: #a66b16;
+
+  font-size: 8px;
+
+  font-weight: 700;
+
+  letter-spacing: 1.2px;
+}
+
+
+.confirm-wrapper p,
+.success-wrapper p,
+.sending-wrapper p {
+  margin-top: 9px;
+
+  color: #7f8b84;
+
+  font-size: 10px;
+
+  line-height: 1.8;
+}
+
+
+.mail-card {
+  margin-top: 24px;
+
+  padding: 16px;
+
+  text-align: left;
+
+  border:
+    1px solid #e0e6e2;
+
+  border-radius: 12px;
+
+  background: white;
+}
+
+
+.mail-row {
+  display: grid;
+
+  grid-template-columns:
+    70px 1fr;
+
+  padding: 10px 0;
+
+  border-bottom:
+    1px solid #edf0ee;
+}
+
+
+.mail-row:last-child {
+  border-bottom: none;
+}
+
+
+.mail-label {
+  color: #929c96;
+
+  font-size: 9px;
+}
+
+
+.mail-value {
+  font-size: 10px;
+}
+
+
+.mail-value span {
+  color: #8a958f;
+}
+
+
+.attachment-list {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  gap: 6px;
+}
+
+
+.attachment {
+  padding: 6px 9px;
+
+  border-radius: 7px;
+
+  background: #f4f7f5;
+
+  font-size: 9px;
+}
+
+
+.risk-warning {
+  margin-top: 12px;
+
+  color: #9a7025;
+
+  font-size: 9px;
+}
+
+
+.confirm-actions,
+.result-actions {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 9px;
+
+  margin-top: 20px;
+}
+
+
+/* ===================================
+   Sending
+=================================== */
+
+.sending-loader {
+  width: 42px;
+
+  height: 42px;
+
+  margin: 0 auto 18px;
+
+  border:
+    4px solid #e3ebe7;
+
+  border-top-color:
+    #3f7562;
+
+  border-radius: 50%;
+
+  animation:
+    spin 0.8s linear infinite;
+}
+
+
+@keyframes spin {
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+
+/* ===================================
+   Result
+=================================== */
+
+.deliverables {
+  margin-top: 23px;
+
+  overflow: hidden;
+
+  text-align: left;
+
+  border:
+    1px solid #e0e6e2;
+
+  border-radius: 12px;
+
+  background: white;
+}
+
+
+.deliverable-row {
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  padding: 13px 15px;
+
+  border-bottom:
+    1px solid #edf0ee;
+}
+
+
+.deliverable-row:last-child {
+  border-bottom: none;
+}
+
+
+.deliverable-name {
+  font-size: 10px;
+
+  font-weight: 620;
+}
+
+
+.deliverable-desc {
+  margin-top: 3px;
+
+  color: #949e98;
+
+  font-size: 8px;
+}
+
+
+.success-tag {
+  padding: 4px 7px;
+
+  border-radius: 999px;
+
+  background: #e5f1eb;
+
+  color: #3d6d5b;
+
+  font-size: 8px;
+}
+
+
+.task-metrics {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+
+  margin-top: 22px;
+
+  padding-top: 18px;
+
+  border-top:
+    1px solid #e5e9e7;
+}
+
+
+.task-metrics div {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  gap: 3px;
+}
+
+
+.task-metrics strong {
+  color: #356452;
+
+  font-size: 22px;
+}
+
+
+.task-metrics span {
+  color: #929c96;
+
+  font-size: 8px;
+}
+
+
+/* ===================================
+   Responsive
+=================================== */
+
+@media (max-width: 900px) {
+
+  .app-shell {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .sidebar {
+    display: none;
+  }
+
+
+  .example-grid,
+  .understanding-grid,
+  .task-metrics {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .execution-layout {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .app-route {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .route-line {
+    transform:
+      rotate(90deg);
+  }
+
+}
+</style>
+</head>
+
+<body>
+
+  <main class="app-shell">
+
+    <!-- 左侧流程导航 -->
+    <aside class="sidebar">
+
+      <div class="brand">
+        <div class="brand-icon">妥</div>
+
+        <div>
+          <div class="brand-name">办妥</div>
+          <div class="brand-desc">一句话，把事情办妥</div>
+        </div>
+      </div>
+
+
+      <nav class="stage-nav">
+
+        <div class="stage-item active" data-stage="1">
+          <div class="stage-number">1</div>
+
+          <div>
+            <div class="stage-name">描述目标</div>
+            <div class="stage-desc">告诉我想完成什么</div>
+          </div>
+        </div>
+
+
+        <div class="stage-item" data-stage="2">
+          <div class="stage-number">2</div>
+
+          <div>
+            <div class="stage-name">理解与规划</div>
+            <div class="stage-desc">确认目标与执行方式</div>
+          </div>
+        </div>
+
+
+        <div class="stage-item" data-stage="3">
+          <div class="stage-number">3</div>
+
+          <div>
+            <div class="stage-name">执行任务</div>
+            <div class="stage-desc">Agent 自主处理</div>
+          </div>
+        </div>
+
+
+        <div class="stage-item" data-stage="4">
+          <div class="stage-number">4</div>
+
+          <div>
+            <div class="stage-name">必要确认</div>
+            <div class="stage-desc">仅在需要时出现</div>
+          </div>
+        </div>
+
+
+        <div class="stage-item" data-stage="5">
+          <div class="stage-number">5</div>
+
+          <div>
+            <div class="stage-name">交付结果</div>
+            <div class="stage-desc">查看最终成果</div>
+          </div>
+        </div>
+
+      </nav>
+
+
+      <div class="sidebar-footer">
+        默认自主执行低风险操作，
+        仅在必要节点将控制权交还给你。
+      </div>
+
+    </aside>
+
+
+    <!-- 主内容区 -->
+    <section class="main-content">
+
+      <header class="topbar">
+
+        <div>
+          <div class="eyebrow">本地智能代办</div>
+
+          <h1 id="pageTitle">
+            今天想让我办什么？
+          </h1>
+
+          <p id="pageSubtitle">
+            描述最终想完成的事情，不需要告诉我每一步怎么操作。
+          </p>
+        </div>
+
+
+        <div class="system-status">
+          <span class="status-dot"></span>
+          本地执行环境正常
+        </div>
+
+      </header>
+
+
+      <!-- ========================
+           Stage 1 描述目标
+      ========================= -->
+
+      <section id="stage1" class="stage-page active">
+
+        <div class="task-card">
+
+          <div class="folder-row">
+
+            <div class="folder-info">
+
+              <div class="folder-icon">
+                📁
+              </div>
+
+              <div>
+                <div class="folder-name">
+                  本地工作环境
+                </div>
+
+                <div class="folder-path">
+                  Downloads / Documents / Desktop
+                </div>
+              </div>
+
+            </div>
+
+
+            <button
+              class="secondary-btn"
+              type="button"
+            >
+              选择文件夹
+            </button>
+
+          </div>
+
+
+          <textarea
+            id="taskInput"
+            class="task-input"
+          >把下载目录里本周的发票整理到“9月报销”文件夹，按“日期-商户-金额”重命名，生成报销清单，并发给财务小王。</textarea>
+
+
+          <div class="task-footer">
+
+            <div class="input-hint">
+              高风险或不可逆操作不会未经确认自动执行
+            </div>
+
+            <button
+              id="analyzeBtn"
+              class="primary-btn"
+              type="button"
+            >
+              交给办妥 →
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <div class="examples">
+
+          <div class="examples-title">
+            适合交给我的任务
+          </div>
+
+
+          <div class="example-grid">
+
+            <button class="example-card" type="button">
+              整理今天下载的合同，并按客户名称分类
+            </button>
+
+            <button class="example-card" type="button">
+              把这份 PPT 调整得更简洁专业
+            </button>
+
+            <button class="example-card" type="button">
+              整理本周发票、生成清单并发给财务
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ========================
+           Stage 2 理解与规划
+      ========================= -->
+
+      <section id="stage2" class="stage-page">
+
+        <div class="understanding-card">
+
+          <div class="card-label">
+            我理解的是
+          </div>
+
+          <h2>
+            完成本周发票整理，并将报销材料发送给财务
+          </h2>
+
+
+          <div class="understanding-grid">
+
+            <div class="info-block">
+
+              <div class="info-label">
+                任务对象
+              </div>
+
+              <div class="info-value">
+                Downloads 中本周的发票
+              </div>
+
+            </div>
+
+
+            <div class="info-block">
+
+              <div class="info-label">
+                最终交付
+              </div>
+
+              <div class="info-value">
+                整理后的发票 + 报销清单 + 邮件
+              </div>
+
+            </div>
+
+
+            <div class="info-block">
+
+              <div class="info-label">
+                执行环境
+              </div>
+
+              <div class="mini-route">
+
+                <span>文件系统</span>
+
+                <span class="mini-arrow">
+                  →
+                </span>
+
+                <span>表格</span>
+
+                <span class="mini-arrow">
+                  →
+                </span>
+
+                <span>邮件</span>
+
+              </div>
+
+              <div class="route-note">
+                本任务需要跨 3 个应用完成
+              </div>
+
+            </div>
+
+
+            <div class="info-block">
+
+              <div class="info-label">
+                用户介入
+              </div>
+
+              <div class="info-value">
+                预计 1 次
+              </div>
+
+              <div class="route-note">
+                邮件正式发送前需要确认
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="plan-section">
+
+          <div class="section-heading">
+
+            <div>
+              <div class="card-label">
+                执行计划
+              </div>
+
+              <h2>
+                我会按以下方式完成
+              </h2>
+            </div>
+
+
+            <div class="auto-badge">
+              低风险步骤自动执行
+            </div>
+
+          </div>
+
+
+          <div class="plan-list">
+
+            <div class="plan-row">
+
+              <div class="plan-index">
+                01
+              </div>
+
+              <div>
+                <div class="plan-title">
+                  查找本周发票
+                </div>
+
+                <div class="plan-desc">
+                  扫描 Downloads，识别需要处理的发票
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="plan-row">
+
+              <div class="plan-index">
+                02
+              </div>
+
+              <div>
+                <div class="plan-title">
+                  整理并重命名
+                </div>
+
+                <div class="plan-desc">
+                  创建“9月报销”，按日期-商户-金额统一命名
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="plan-row">
+
+              <div class="plan-index">
+                03
+              </div>
+
+              <div>
+                <div class="plan-title">
+                  生成报销清单
+                </div>
+
+                <div class="plan-desc">
+                  汇总日期、商户、金额和文件
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="plan-row">
+
+              <div class="plan-index">
+                04
+              </div>
+
+              <div>
+                <div class="plan-title">
+                  准备邮件
+                </div>
+
+                <div class="plan-desc">
+                  创建邮件草稿并添加附件
+                </div>
+              </div>
+
+            </div>
+
+
+            <div class="plan-row risk">
+
+              <div class="plan-index">
+                05
+              </div>
+
+              <div>
+
+                <div class="plan-title">
+
+                  发送邮件
+
+                  <span class="risk-tag">
+                    需要确认
+                  </span>
+
+                </div>
+
+                <div class="plan-desc">
+                  正式发送前交由你确认收件人和附件
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="bottom-actions">
+
+          <button
+            id="backToInputBtn"
+            class="secondary-btn"
+            type="button"
+          >
+            返回修改
+          </button>
+
+
+          <button
+            id="executeBtn"
+            class="primary-btn"
+            type="button"
+          >
+            开始执行 →
+          </button>
+
+        </div>
+
+      </section>
+
+
+      <!-- ========================
+           Stage 3 执行任务
+      ========================= -->
+
+      <section id="stage3" class="stage-page">
+
+
+        <!-- 跨软件执行路径 -->
+
+        <div class="app-route-panel">
+
+          <div class="route-title">
+            当前任务执行路径
+          </div>
+
+
+          <div class="app-route">
+
+            <div
+              id="routeFile"
+              class="route-app active"
+            >
+
+              <div class="route-app-icon">
+                📁
+              </div>
+
+              <div class="route-app-name">
+                文件系统
+              </div>
+
+              <div class="route-status">
+                执行中
+              </div>
+
+            </div>
+
+
+            <div class="route-line">
+              →
+            </div>
+
+
+            <div
+              id="routeSheet"
+              class="route-app"
+            >
+
+              <div class="route-app-icon">
+                ▦
+              </div>
+
+              <div class="route-app-name">
+                表格
+              </div>
+
+              <div class="route-status">
+                等待
+              </div>
+
+            </div>
+
+
+            <div class="route-line">
+              →
+            </div>
+
+
+            <div
+              id="routeMail"
+              class="route-app"
+            >
+
+              <div class="route-app-icon">
+                ✉
+              </div>
+
+              <div class="route-app-name">
+                邮件
+              </div>
+
+              <div class="route-status">
+                等待
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- 当前执行状态 -->
+
+        <div class="execution-summary">
+
+          <div>
+
+            <div class="card-label">
+              Agent 正在自主执行
+            </div>
+
+            <h2 id="currentStepTitle">
+              正在查找本周发票
+            </h2>
+
+            <div
+              id="currentStepDesc"
+              class="execution-desc"
+            >
+              正在扫描 Downloads 中符合条件的文件
+            </div>
+
+          </div>
+
+
+          <div class="progress-number">
+
+            <span id="progressCurrent">
+              1
+            </span>
+
+            <span>
+              / 4
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <div class="progress-bar">
+
+          <div
+            id="progressFill"
+            class="progress-fill"
+          >
+          </div>
+
+        </div>
+
+
+        <div class="execution-layout">
+
+
+          <!-- 左侧执行步骤 -->
+
+          <div class="execution-steps">
+
+            <div
+              class="execution-step active"
+              data-exec="0"
+            >
+
+              <div class="exec-icon">
+                1
+              </div>
+
+              <div>
+                <div class="exec-title">
+                  查找发票
+                </div>
+
+                <div class="exec-state">
+                  执行中
+                </div>
+              </div>
+
+            </div>
+
+
+            <div
+              class="execution-step"
+              data-exec="1"
+            >
+
+              <div class="exec-icon">
+                2
+              </div>
+
+              <div>
+                <div class="exec-title">
+                  整理文件
+                </div>
+
+                <div class="exec-state">
+                  等待执行
+                </div>
+              </div>
+
+            </div>
+
+
+            <div
+              class="execution-step"
+              data-exec="2"
+            >
+
+              <div class="exec-icon">
+                3
+              </div>
+
+              <div>
+                <div class="exec-title">
+                  生成清单
+                </div>
+
+                <div class="exec-state">
+                  等待执行
+                </div>
+              </div>
+
+            </div>
+
+
+            <div
+              class="execution-step"
+              data-exec="3"
+            >
+
+              <div class="exec-icon">
+                4
+              </div>
+
+              <div>
+                <div class="exec-title">
+                  准备邮件
+                </div>
+
+                <div class="exec-state">
+                  等待执行
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- 右侧软件执行预览 -->
+
+          <div class="execution-preview">
+
+            <div class="preview-header">
+
+              <div id="previewApp">
+                文件系统
+              </div>
+
+              <div class="working-indicator">
+
+                <span></span>
+
+                正在工作
+
+              </div>
+
+            </div>
+
+
+            <div
+              id="previewContent"
+              class="preview-content"
+            >
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <div class="execution-toolbar">
+
+          <button
+            id="toggleLogBtn"
+            class="text-btn"
+            type="button"
+          >
+            查看执行记录
+          </button>
+
+
+          <button
+            id="cancelExecutionBtn"
+            class="text-btn danger-text"
+            type="button"
+          >
+            停止任务
+          </button>
+
+        </div>
+
+
+        <div
+          id="executionLog"
+          class="execution-log"
+        >
+        </div>
+
+      </section>
+
+
+      <!-- ========================
+           Stage 4 必要确认
+      ========================= -->
+
+      <section id="stage4" class="stage-page">
+
+        <div class="confirm-wrapper">
+
+          <div class="confirm-icon">
+            !
+          </div>
+
+
+          <div class="waiting-label">
+            WAITING FOR YOU
+          </div>
+
+
+          <h2>
+            Agent 已暂停，等待你的确认
+          </h2>
+
+
+          <p>
+            文件整理、报销清单和邮件草稿均已完成。
+            下一步「发送邮件」将产生外部影响，因此不会自动执行。
+          </p>
+
+
+          <div class="mail-card">
+
+
+            <div class="mail-row">
+
+              <div class="mail-label">
+                收件人
+              </div>
+
+              <div class="mail-value">
+                财务小王
+                <span>
+                  &lt;xiaowang@company.com&gt;
+                </span>
+              </div>
+
+            </div>
+
+
+            <div class="mail-row">
+
+              <div class="mail-label">
+                主题
+              </div>
+
+              <div class="mail-value">
+                9月报销材料
+              </div>
+
+            </div>
+
+
+            <div class="mail-row">
+
+              <div class="mail-label">
+                附件
+              </div>
+
+              <div class="attachment-list">
+
+                <div class="attachment">
+                  📦 9月报销.zip
+                </div>
+
+                <div class="attachment">
+                  📊 报销清单.xlsx
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <div class="risk-warning">
+            该操作会向外部人员发送信息，完成后无法完全撤回。
+          </div>
+
+
+          <div class="confirm-actions">
+
+            <button
+              id="keepDraftBtn"
+              class="secondary-btn"
+              type="button"
+            >
+              暂不发送
+            </button>
+
+
+            <button
+              id="sendBtn"
+              class="primary-btn"
+              type="button"
+            >
+              确认发送 →
+            </button>
+
+          </div>
+
+        </div>
+
+      </section>
+
+
+      <!-- ========================
+           发送后验证中
+      ========================= -->
+
+      <section id="sendingStage" class="stage-page">
+
+        <div class="sending-wrapper">
+
+          <div class="sending-loader">
+          </div>
+
+          <div class="card-label">
+            已恢复执行
+          </div>
+
+          <h2 id="sendingTitle">
+            正在发送邮件
+          </h2>
+
+          <p id="sendingDesc">
+            用户确认完成，Agent 正在继续执行最后一步。
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- ========================
+           Stage 5 交付结果
+      ========================= -->
+
+      <section id="stage5" class="stage-page">
+
+        <div class="success-wrapper">
+
+          <div class="success-icon">
+            ✓
+          </div>
+
+          <div class="card-label">
+            已办妥
+          </div>
+
+          <h2 id="resultHeading">
+            本周报销材料已整理并发送
+          </h2>
+
+          <p id="resultDescription">
+            Agent 已完成全部任务，并验证最终结果。
+          </p>
+
+
+          <div class="deliverables">
+
+            <div class="deliverable-row">
+
+              <div>
+                <div class="deliverable-name">
+                  📁 发票整理
+                </div>
+
+                <div class="deliverable-desc">
+                  5 份发票已整理并重命名
+                </div>
+              </div>
+
+              <div class="success-tag">
+                已完成
+              </div>
+
+            </div>
+
+
+            <div class="deliverable-row">
+
+              <div>
+                <div class="deliverable-name">
+                  📊 报销清单.xlsx
+                </div>
+
+                <div class="deliverable-desc">
+                  合计 ¥1,286.40
+                </div>
+              </div>
+
+              <div class="success-tag">
+                已生成
+              </div>
+
+            </div>
+
+
+            <div
+              id="mailResult"
+              class="deliverable-row"
+            >
+
+              <div>
+
+                <div class="deliverable-name">
+                  ✉ 邮件
+                </div>
+
+                <div class="deliverable-desc">
+                  已发送给财务小王
+                </div>
+
+              </div>
+
+              <div class="success-tag">
+                已发送
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- 最终核心指标 -->
+
+          <div class="task-metrics">
+
+            <div>
+              <strong>3</strong>
+              <span>涉及应用</span>
+            </div>
+
+            <div>
+              <strong>7</strong>
+              <span>完成步骤</span>
+            </div>
+
+            <div>
+              <strong>1</strong>
+              <span>用户介入</span>
+            </div>
+
+          </div>
+
+
+          <div class="result-actions">
+
+            <button
+              id="viewFinalLogBtn"
+              class="secondary-btn"
+              type="button"
+            >
+              查看执行记录
+            </button>
+
+            <button
+              id="newTaskBtn"
+              class="primary-btn"
+              type="button"
+            >
+              新建代办
+            </button>
+
+          </div>
+
+
+          <div
+            id="finalLog"
+            class="execution-log"
+          >
+          </div>
+
+        </div>
+
+      </section>
+
+    </section>
+
+  </main>
+
+
+  <script>
+/* ================================
+   页面阶段配置
+================================ */
+
+const stages = [
+
+  {
+    title:
+      "今天想让我办什么？",
+
+    subtitle:
+      "描述最终想完成的事情，不需要告诉我每一步怎么操作。"
+  },
+
+
+  {
+    title:
+      "我先确认一下理解是否正确",
+
+    subtitle:
+      "我会把你的目标转成完整任务，并决定如何完成。"
+  },
+
+
+  {
+    title:
+      "正在替你处理",
+
+    subtitle:
+      "明确、低风险的步骤由 Agent 自主完成，并持续检查执行结果。"
+  },
+
+
+  {
+    title:
+      "这一步需要你的决定",
+
+    subtitle:
+      "只有当操作需要你的判断或会产生明显外部影响时，才会暂停。"
+  },
+
+
+  {
+    title:
+      "已经办妥",
+
+    subtitle:
+      "任务完成后直接向你交付结果。"
+  }
+
+];
+
+
+
+/* ================================
+   DOM
+================================ */
+
+const stagePages =
+  document.querySelectorAll(
+    ".stage-page"
+  );
+
+
+const stageItems =
+  document.querySelectorAll(
+    ".stage-item"
+  );
+
+
+const pageTitle =
+  document.getElementById(
+    "pageTitle"
+  );
+
+
+const pageSubtitle =
+  document.getElementById(
+    "pageSubtitle"
+  );
+
+
+const analyzeBtn =
+  document.getElementById(
+    "analyzeBtn"
+  );
+
+
+const backToInputBtn =
+  document.getElementById(
+    "backToInputBtn"
+  );
+
+
+const executeBtn =
+  document.getElementById(
+    "executeBtn"
+  );
+
+
+const toggleLogBtn =
+  document.getElementById(
+    "toggleLogBtn"
+  );
+
+
+const cancelExecutionBtn =
+  document.getElementById(
+    "cancelExecutionBtn"
+  );
+
+
+const keepDraftBtn =
+  document.getElementById(
+    "keepDraftBtn"
+  );
+
+
+const sendBtn =
+  document.getElementById(
+    "sendBtn"
+  );
+
+
+const viewFinalLogBtn =
+  document.getElementById(
+    "viewFinalLogBtn"
+  );
+
+
+const newTaskBtn =
+  document.getElementById(
+    "newTaskBtn"
+  );
+
+
+const executionLog =
+  document.getElementById(
+    "executionLog"
+  );
+
+
+const finalLog =
+  document.getElementById(
+    "finalLog"
+  );
+
+
+const previewContent =
+  document.getElementById(
+    "previewContent"
+  );
+
+
+const previewApp =
+  document.getElementById(
+    "previewApp"
+  );
+
+
+const progressFill =
+  document.getElementById(
+    "progressFill"
+  );
+
+
+const progressCurrent =
+  document.getElementById(
+    "progressCurrent"
+  );
+
+
+const currentStepTitle =
+  document.getElementById(
+    "currentStepTitle"
+  );
+
+
+const currentStepDesc =
+  document.getElementById(
+    "currentStepDesc"
+  );
+
+
+const resultHeading =
+  document.getElementById(
+    "resultHeading"
+  );
+
+
+const resultDescription =
+  document.getElementById(
+    "resultDescription"
+  );
+
+
+const mailResult =
+  document.getElementById(
+    "mailResult"
+  );
+
+
+const sendingStage =
+  document.getElementById(
+    "sendingStage"
+  );
+
+
+const sendingTitle =
+  document.getElementById(
+    "sendingTitle"
+  );
+
+
+const sendingDesc =
+  document.getElementById(
+    "sendingDesc"
+  );
+
+
+/* 跨软件执行路径 */
+
+const routeFile =
+  document.getElementById(
+    "routeFile"
+  );
+
+
+const routeSheet =
+  document.getElementById(
+    "routeSheet"
+  );
+
+
+const routeMail =
+  document.getElementById(
+    "routeMail"
+  );
+
+
+
+/* ================================
+   状态
+================================ */
+
+let executionIndex = 0;
+
+let executionTimer = null;
+
+let stopped = false;
+
+const logs = [];
+
+
+
+/* ================================
+   Demo 执行步骤
+================================ */
+
+const executionData = [
+
+
+  /* 1 文件系统 */
+
+  {
+    title:
+      "正在查找本周发票",
+
+    desc:
+      "正在扫描 Downloads 中符合条件的文件",
+
+    app:
+      "文件系统",
+
+    appType:
+      "file",
+
+    log:
+      "扫描 Downloads，找到 5 份符合条件的本周发票。",
+
+    preview: `
+
+      <div class="preview-title">
+        Downloads
+      </div>
+
+
+      <div class="fake-file">
+        <span>invoice_starbucks.pdf</span>
+        <span>本周</span>
+      </div>
+
+
+      <div class="fake-file">
+        <span>diditrip_0908.pdf</span>
+        <span>本周</span>
+      </div>
+
+
+      <div class="fake-file">
+        <span>hotel_invoice.pdf</span>
+        <span>本周</span>
+      </div>
+
+
+      <div class="fake-file">
+        <span>office_supply.pdf</span>
+        <span>本周</span>
+      </div>
+
+
+      <div class="fake-file">
+        <span>taxi_invoice.pdf</span>
+        <span>本周</span>
+      </div>
+
+    `
+  },
+
+
+
+  /* 2 文件系统 */
+
+  {
+    title:
+      "正在整理并重命名文件",
+
+    desc:
+      "已创建“9月报销”，正在按照规则整理文件",
+
+    app:
+      "文件系统",
+
+    appType:
+      "file",
+
+    log:
+      "创建“9月报销”文件夹，5 / 5 文件整理和重命名成功。",
+
+    preview: `
+
+      <div class="preview-title">
+        9月报销
+      </div>
+
+
+      <div class="fake-file">
+        <span>
+          2026-09-03-星巴克-46.00.pdf
+        </span>
+
+        <span>✓</span>
+      </div>
+
+
+      <div class="fake-file">
+        <span>
+          2026-09-05-滴滴-82.50.pdf
+        </span>
+
+        <span>✓</span>
+      </div>
+
+
+      <div class="fake-file">
+        <span>
+          2026-09-06-酒店-860.00.pdf
+        </span>
+
+        <span>✓</span>
+      </div>
+
+
+      <div class="fake-file">
+        <span>
+          2026-09-07-办公用品-189.90.pdf
+        </span>
+
+        <span>✓</span>
+      </div>
+
+
+      <div class="fake-file">
+        <span>
+          2026-09-08-打车平台-108.00.pdf
+        </span>
+
+        <span>✓</span>
+      </div>
+
+    `
+  },
+
+
+
+  /* 3 表格 */
+
+  {
+    title:
+      "正在生成报销清单",
+
+    desc:
+      "已提取发票日期、商户和金额信息",
+
+    app:
+      "表格",
+
+    appType:
+      "sheet",
+
+    log:
+      "跨入表格应用，生成报销清单.xlsx，总金额 ¥1,286.40。",
+
+    preview: `
+
+      <div class="preview-title">
+        报销清单.xlsx
+      </div>
+
+
+      <table class="fake-table">
+
+        <thead>
+
+          <tr>
+            <th>日期</th>
+            <th>商户</th>
+            <th>金额</th>
+          </tr>
+
+        </thead>
+
+
+        <tbody>
+
+          <tr>
+            <td>09-03</td>
+            <td>星巴克</td>
+            <td>¥46.00</td>
+          </tr>
+
+
+          <tr>
+            <td>09-05</td>
+            <td>滴滴</td>
+            <td>¥82.50</td>
+          </tr>
+
+
+          <tr>
+            <td>09-06</td>
+            <td>酒店</td>
+            <td>¥860.00</td>
+          </tr>
+
+
+          <tr>
+            <td>09-07</td>
+            <td>办公用品</td>
+            <td>¥189.90</td>
+          </tr>
+
+
+          <tr>
+            <td>09-08</td>
+            <td>打车平台</td>
+            <td>¥108.00</td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    `
+  },
+
+
+
+  /* 4 邮件 */
+
+  {
+    title:
+      "正在准备邮件",
+
+    desc:
+      "已进入邮件应用，正在创建草稿并添加附件",
+
+    app:
+      "邮件",
+
+    appType:
+      "mail",
+
+    log:
+      "跨入邮件应用，邮件草稿已完成，收件人与附件验证通过。",
+
+    preview: `
+
+      <div class="preview-title">
+        新邮件
+      </div>
+
+
+      <div class="fake-mail-row">
+
+        <div class="fake-mail-label">
+          收件人
+        </div>
+
+        <div class="fake-mail-field">
+          财务小王
+          &lt;xiaowang@company.com&gt;
+        </div>
+
+      </div>
+
+
+      <div class="fake-mail-row">
+
+        <div class="fake-mail-label">
+          主题
+        </div>
+
+        <div class="fake-mail-field">
+          9月报销材料
+        </div>
+
+      </div>
+
+
+      <div class="fake-mail-row">
+
+        <div class="fake-mail-label">
+          附件
+        </div>
+
+        <div class="fake-mail-field">
+          9月报销.zip
+          ·
+          报销清单.xlsx
+        </div>
+
+      </div>
+
+
+      <div class="fake-mail-row">
+
+        <div class="fake-mail-label">
+          正文
+        </div>
+
+        <div class="fake-mail-field">
+
+          小王你好，
+
+          <br><br>
+
+          附件为本周报销材料和报销清单，
+          请查收。
+
+        </div>
+
+      </div>
+
+    `
+  }
+
+];
+
+
+
+/* ================================
+   页面阶段
+================================ */
+
+function setStage(stage) {
+
+
+  stagePages.forEach(
+    page => {
+
+      page.classList.remove(
+        "active"
+      );
+
+    }
+  );
+
+
+  sendingStage.classList.remove(
+    "active"
+  );
+
+
+  const page =
+    document.getElementById(
+      `stage${stage}`
+    );
+
+
+  if (page) {
+
+    page.classList.add(
+      "active"
+    );
+
+  }
+
+
+
+  stageItems.forEach(
+    (item, index) => {
+
+
+      item.classList.remove(
+        "active",
+        "done"
+      );
+
+
+      if (
+        index + 1 < stage
+      ) {
+
+        item.classList.add(
+          "done"
+        );
+
+      }
+
+
+      if (
+        index + 1 === stage
+      ) {
+
+        item.classList.add(
+          "active"
+        );
+
+      }
+
+    }
+  );
+
+
+  pageTitle.textContent =
+    stages[stage - 1].title;
+
+
+  pageSubtitle.textContent =
+    stages[stage - 1].subtitle;
+
+}
+
+
+
+/* ================================
+   跨软件路径
+================================ */
+
+function updateAppRoute(
+  currentApp
+) {
+
+
+  const elements = {
+
+    file:
+      routeFile,
+
+    sheet:
+      routeSheet,
+
+    mail:
+      routeMail
+
+  };
+
+
+  const order = [
+    "file",
+    "sheet",
+    "mail"
+  ];
+
+
+  const currentIndex =
+    order.indexOf(
+      currentApp
+    );
+
+
+  order.forEach(
+    (app, index) => {
+
+
+      const element =
+        elements[app];
+
+
+      const status =
+        element.querySelector(
+          ".route-status"
+        );
+
+
+      element.classList.remove(
+        "active",
+        "done"
+      );
+
+
+      if (
+        index < currentIndex
+      ) {
+
+        element.classList.add(
+          "done"
+        );
+
+        status.textContent =
+          "已完成";
+
+      }
+
+
+      else if (
+        index === currentIndex
+      ) {
+
+        element.classList.add(
+          "active"
+        );
+
+        status.textContent =
+          "执行中";
+
+      }
+
+
+      else {
+
+        status.textContent =
+          "等待";
+
+      }
+
+    }
+  );
+
+}
+
+
+
+/* ================================
+   执行步骤 UI
+================================ */
+
+function updateExecutionStep(
+  index
+) {
+
+
+  const elements =
+    document.querySelectorAll(
+      ".execution-step"
+    );
+
+
+  elements.forEach(
+    (element, stepIndex) => {
+
+
+      element.classList.remove(
+        "active",
+        "done"
+      );
+
+
+      const icon =
+        element.querySelector(
+          ".exec-icon"
+        );
+
+
+      const state =
+        element.querySelector(
+          ".exec-state"
+        );
+
+
+      if (
+        stepIndex < index
+      ) {
+
+        element.classList.add(
+          "done"
+        );
+
+        icon.textContent =
+          "✓";
+
+        state.textContent =
+          "已完成";
+
+      }
+
+
+      else if (
+        stepIndex === index
+      ) {
+
+        element.classList.add(
+          "active"
+        );
+
+        icon.textContent =
+          stepIndex + 1;
+
+        state.textContent =
+          "执行中";
+
+      }
+
+
+      else {
+
+        icon.textContent =
+          stepIndex + 1;
+
+        state.textContent =
+          "等待执行";
+
+      }
+
+    }
+  );
+
+}
+
+
+
+/* ================================
+   Logs
+================================ */
+
+function renderLog() {
+
+
+  const html =
+    logs.map(
+      (item, index) => {
+
+
+        const number =
+          String(index + 1)
+            .padStart(
+              2,
+              "0"
+            );
+
+
+        return `
+
+          ${number}
+          &nbsp;&nbsp;
+          ${item}
+
+        `;
+
+      }
+    ).join(
+      "<br>"
+    );
+
+
+  executionLog.innerHTML =
+    html;
+
+
+  finalLog.innerHTML =
+    html;
+
+}
+
+
+
+/* ================================
+   Agent Execution
+================================ */
+
+function runExecutionStep() {
+
+
+  if (stopped) {
+
+    return;
+
+  }
+
+
+
+  if (
+    executionIndex >=
+    executionData.length
+  ) {
+
+
+    executionTimer =
+      setTimeout(
+        () => {
+
+
+          logs.push(
+            "检测到下一步为“发送邮件”，属于对外操作。Agent 主动暂停执行。"
+          );
+
+
+          renderLog();
+
+
+          setStage(4);
+
+
+        },
+        700
+      );
+
+
+    return;
+
+  }
+
+
+
+  const item =
+    executionData[
+      executionIndex
+    ];
+
+
+
+  updateExecutionStep(
+    executionIndex
+  );
+
+
+  updateAppRoute(
+    item.appType
+  );
+
+
+  currentStepTitle.textContent =
+    item.title;
+
+
+  currentStepDesc.textContent =
+    item.desc;
+
+
+  previewApp.textContent =
+    item.app;
+
+
+  previewContent.innerHTML =
+    item.preview;
+
+
+  progressCurrent.textContent =
+    executionIndex + 1;
+
+
+  progressFill.style.width =
+    `${
+      (
+        (executionIndex + 1) /
+        executionData.length
+      )
+      *
+      100
+    }%`;
+
+
+
+  executionTimer =
+    setTimeout(
+      () => {
+
+
+        logs.push(
+          item.log
+        );
+
+
+        renderLog();
+
+
+        executionIndex++;
+
+
+        runExecutionStep();
+
+
+      },
+      1300
+    );
+
+}
+
+
+
+/* ================================
+   开始执行
+================================ */
+
+function startExecution() {
+
+
+  clearTimeout(
+    executionTimer
+  );
+
+
+  stopped =
+    false;
+
+
+  executionIndex =
+    0;
+
+
+  logs.length =
+    0;
+
+
+  executionLog.style.display =
+    "none";
+
+
+  updateAppRoute(
+    "file"
+  );
+
+
+  setStage(3);
+
+
+  runExecutionStep();
+
+}
+
+
+
+/* ================================
+   停止执行
+================================ */
+
+function stopExecution() {
+
+
+  clearTimeout(
+    executionTimer
+  );
+
+
+  stopped =
+    true;
+
+
+  logs.push(
+    "用户主动停止任务，Agent 已停止后续操作。"
+  );
+
+
+  renderLog();
+
+
+  executionLog.style.display =
+    "block";
+
+}
+
+
+
+/* ================================
+   确认发送
+================================ */
+
+function confirmSend() {
+
+
+  logs.push(
+    "用户确认发送邮件。"
+  );
+
+
+  renderLog();
+
+
+  document
+    .getElementById(
+      "stage4"
+    )
+    .classList.remove(
+      "active"
+    );
+
+
+  sendingStage.classList.add(
+    "active"
+  );
+
+
+  pageTitle.textContent =
+    "正在完成最后一步";
+
+
+  pageSubtitle.textContent =
+    "用户确认后，Agent 恢复执行并验证最终结果。";
+
+
+  sendingTitle.textContent =
+    "正在发送邮件";
+
+
+  sendingDesc.textContent =
+    "已获得用户确认，正在向财务小王发送邮件。";
+
+
+  setTimeout(
+    () => {
+
+
+      sendingTitle.textContent =
+        "正在验证发送结果";
+
+
+      sendingDesc.textContent =
+        "邮件已发送，正在确认发送状态和附件信息。";
+
+
+      logs.push(
+        "邮件发送动作已执行，正在检查发送状态。"
+      );
+
+
+      renderLog();
+
+
+  }, 900);
+
+
+
+  setTimeout(
+    () => {
+
+
+      logs.push(
+        "最终验证通过：邮件已成功发送给财务小王。"
+      );
+
+
+      renderLog();
+
+
+      resultHeading.textContent =
+        "本周报销材料已整理并发送";
+
+
+      resultDescription.textContent =
+        "Agent 已完成整个跨软件任务，并验证最终结果。";
+
+
+      setStage(5);
+
+
+    },
+    1900
+  );
+
+}
+
+
+
+/* ================================
+   暂不发送
+================================ */
+
+function saveDraft() {
+
+
+  logs.push(
+    "用户选择暂不发送，邮件已保留为草稿。"
+  );
+
+
+  renderLog();
+
+
+  resultHeading.textContent =
+    "报销材料已整理，邮件已保存为草稿";
+
+
+  resultDescription.textContent =
+    "Agent 已完成文件整理和报销清单，未执行对外发送。";
+
+
+  mailResult.innerHTML = `
+
+    <div>
+
+      <div class="deliverable-name">
+        ✉ 邮件
+      </div>
+
+      <div class="deliverable-desc">
+        已保留为草稿
+      </div>
+
+    </div>
+
+
+    <div class="success-tag">
+      未发送
+    </div>
+
+  `;
+
+
+  setStage(5);
+
+}
+
+
+
+/* ================================
+   Event
+================================ */
+
+analyzeBtn.addEventListener(
+  "click",
+  () => {
+
+    setStage(2);
+
+  }
+);
+
+
+backToInputBtn.addEventListener(
+  "click",
+  () => {
+
+    setStage(1);
+
+  }
+);
+
+
+executeBtn.addEventListener(
+  "click",
+  startExecution
+);
+
+
+toggleLogBtn.addEventListener(
+  "click",
+  () => {
+
+
+    executionLog.style.display =
+
+      executionLog.style.display ===
+      "block"
+
+        ? "none"
+
+        : "block";
+
+  }
+);
+
+
+cancelExecutionBtn.addEventListener(
+  "click",
+  stopExecution
+);
+
+
+sendBtn.addEventListener(
+  "click",
+  confirmSend
+);
+
+
+keepDraftBtn.addEventListener(
+  "click",
+  saveDraft
+);
+
+
+viewFinalLogBtn.addEventListener(
+  "click",
+  () => {
+
+
+    finalLog.style.display =
+
+      finalLog.style.display ===
+      "block"
+
+        ? "none"
+
+        : "block";
+
+  }
+);
+
+
+newTaskBtn.addEventListener(
+  "click",
+  () => {
+
+
+    clearTimeout(
+      executionTimer
+    );
+
+
+    stopped =
+      false;
+
+
+    setStage(1);
+
+  }
+);
+
+
+
+/* 示例点击 */
+
+document
+  .querySelectorAll(
+    ".example-card"
+  )
+  .forEach(
+    button => {
+
+
+      button.addEventListener(
+        "click",
+        () => {
+
+
+          document
+            .getElementById(
+              "taskInput"
+            )
+            .value =
+              button
+                .textContent
+                .trim();
+
+        }
+      );
+
+    }
+  );
+
+
+
+/* ================================
+   初始化
+================================ */
+
+setStage(1);
+</script>
+
+</body>
+</html>
